@@ -1,0 +1,17 @@
+---
+- name: install apache
+  hosts: servers
+  become: true
+  tasks: 
+    - name: update server and install apache2
+      apt: 
+       name: apache2
+       state: present
+       update_cache: yes
+    - name: copy files 
+      copy: 
+       src: /home/ubuntu/maddy
+       dest: /home/ubuntu/
+     
+
+         

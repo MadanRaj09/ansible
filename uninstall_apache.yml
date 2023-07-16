@@ -1,0 +1,11 @@
+---
+- name: uninstall apache
+  hosts: servers
+  become: true
+  tasks:
+   - name: uninstalling apache
+     apt:
+       name: apache2
+       state: absent
+       update_cache: yes
+
