@@ -1,0 +1,40 @@
+---
+- hosts: all
+  become: true
+  tasks:
+    - name: updating servers
+      package:
+        update_cache: yes
+
+- hosts: webserver
+  become: true
+  tasks:
+    - name: install packages
+      package:
+         name: "{{ item }}"
+         state: latest
+      with_items:
+         - apache2
+         - git
+         - unzip
+    - name: get the file from web
+      get_url:
+        url: https://getsamplefiles.com/download/zip/sample-1.zip
+        dest: /home/ubuntu/
+    - name: unarchiving files
+      unarchive:
+        src: /home/ubuntu/sample-1.zip
+        dest: /home/ubuntu/
+        remote_src: yes
+
+- hosts: testserver
+  become: true
+  tasks:
+    - name: update the testing work
+      lineinfile:
+         path: /home/ubuntu/maddy.txt
+         state: present
+         line: "todays work is to modify test cases"
+    - name: create a file
+      shell:
+         cmd: touch madan1.txt
